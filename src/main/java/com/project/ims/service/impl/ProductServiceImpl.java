@@ -1,5 +1,6 @@
 package com.project.ims.service.impl;
 
+import com.project.ims.model.dto.ProductDTO;
 import com.project.ims.model.entity.Product;
 import com.project.ims.repository.ProductRepository;
 import com.project.ims.service.ProductService;
@@ -23,30 +24,39 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        Optional<Product> existingProduct = productRepository.findById(product.getProductID());
-        if (existingProduct.isPresent()) {
-            return productRepository.save(product);
-        } else {
-            throw new RuntimeException("Product with ID " + product.getProductID() + " not found.");
-        }
-    }
-
-    @Override
     public Product findByProductId(int id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product with ID " + id + " not found."));
     }
 
     @Override
-    public List<Product> findProductsByName(String name) {
-        return productRepository.findByProductName(name);
+    public List<Product> filterProductsByName(String name) {
+        return productRepository.findByProductNameContaining(name);
     }
 
     @Override
     public Page<Product> findAll(Pageable pageable) {
         return productRepository.findAll(pageable);
     }
+
+    @Override
+    public Product updateProduct(int id, ProductDTO productDTO) {
+        Product existingProduct = findByProductId(id);
+        if (productDTO.getProductName() != null) {
+            existingProduct.setProductName(productDTO.getProductName());
+        }
+        if (productDTO.getCategory() != null) {
+            existingProduct.setCategory(productDTO.getCategory());
+        }
+        if (productDTO.getPrice() != null) {
+            existingProduct.setPrice(productDTO.getPrice());
+        }
+        if (productDTO.getUnitCal() != null) {
+            existingProduct.setUnitCal(productDTO.getUnitCal());
+        }
+        return productRepository.save(existingProduct);
+    }
+
 
     @Override
     public void deleteProduct(int id) {

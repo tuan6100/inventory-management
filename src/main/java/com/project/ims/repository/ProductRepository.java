@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-    List<Product> findByProductName(String name);
+    List<Product> findByProductNameContaining(String name);
     Page<Product> findAll(Pageable pageable);
 }

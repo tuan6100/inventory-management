@@ -18,11 +18,18 @@ spring:
             hibernate:
                 format_sql: true
                 use_sql_comments: true
+    devtools:
+        restart:
+            exclude: src/main/resources/logs/**
 
-logging:
-    file:
-        name: src/main/resources/logs/application.log
-    level:
-        jpa: DEBUG
-        org.springframework.security: DEBUG
-
+#logging:
+#    file:
+#        name: src/main/resources/logs/application.log
+#    level:
+#        jpa: DEBUG
+#        org:
+#            springframework:
+#                security: DEBUG
+#            hibernate:
+#                type: trace
+#                orm.jdbc.bind: trace

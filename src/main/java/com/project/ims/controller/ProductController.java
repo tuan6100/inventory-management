@@ -1,5 +1,6 @@
 package com.project.ims.controller;
 
+import com.project.ims.model.dto.ProductDTO;
 import com.project.ims.model.entity.Product;
 import com.project.ims.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,8 @@ public class ProductController {
     }
 
     @GetMapping("/filter")
-    public Product findProductByName(@RequestParam String name) {
-        List<Product> products = productService.findProductsByName(name);
-        return products.isEmpty() ? null : products.get(0);
+    public List<Product> findProductByName(@RequestParam String name) {
+         return productService.filterProductsByName(name);
     }
 
     @GetMapping("/get-all")
@@ -53,9 +53,9 @@ public class ProductController {
     }
 
 
-    @PutMapping("/update")
-    public Product updateProduct(@RequestBody Product product) {
-        return productService.updateProduct(product);
+    @PutMapping("/update/{id}")
+    public Product updateProduct(@PathVariable int id, @RequestBody ProductDTO productDTO) {
+        return productService.updateProduct(id, productDTO);
     }
 
     @DeleteMapping("/delete")
